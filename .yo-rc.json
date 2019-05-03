@@ -1,0 +1,32 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.todo.service"
+    },
+    "jhipsterVersion": "5.7.0",
+    "applicationType": "microservice",
+    "baseName": "todoservice",
+    "packageName": "com.todo.service",
+    "packageFolder": "com/todo/service",
+    "serverPort": "9080",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NWM4NjQxNDM0NTk4NmY1OGMwMjcwNDk0ZGZiMDNiODFhMGNiMGQ4ZTZiYmU5ZWZmZTdkZjlmZjY3Y2YwYWRkYmRjNjA5MTkzMjA3Y2NjNzBkNjQ2ZjA4YTJiOWFkODFlZDEzZWU4ZTk1ZjBjNDJkMGZkOWEzOTViZjVkM2IwMGE=",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
