@@ -261,6 +261,32 @@ wrapper {
 task stage(dependsOn: 'bootWar') {
 }
 
+jacocoTestReport {
+    reports {
+        html.enabled = true
+    }
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it,
+                exclude: [
+                    '**/vm/**',
+                    '**/utils/**',
+                    '**/util/**',
+                    '**/errors/**',
+                    '**/domain/**',
+                    '**/domains/**',
+                    '**/components/**'
+                ],
+                includes: [
+                    '**/controllers/**',
+                    '**/service/service/**'
+                ])
+
+        })
+    }
+}
+
+test.finalizedBy jacocoTestReport
 compileJava.dependsOn processResources
 processResources.dependsOn cleanResources,bootBuildInfo
 bootBuildInfo.mustRunAfter cleanResources

@@ -23,7 +23,7 @@ public class TaskDetailsController {
     private final Logger log = LoggerFactory.getLogger(TaskDetailsController.class);
 
     @Autowired
-    TaskDetailsService taskDetailsService;
+    private TaskDetailsService taskDetailsService;
 
 
     /**

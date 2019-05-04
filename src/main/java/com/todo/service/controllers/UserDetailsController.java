@@ -30,7 +30,7 @@ public class UserDetailsController {
      * @return the ResponseEntity with status 201 (Created) and with body the new userDetails, or with status 400 (Bad Request) if the userDetails has already an ID
      */
     @PostMapping("/sign-up")
-    public ResponseEntity<UserDetails> createUserDetails(@Valid @RequestBody UserDetails userDetails) {
+    public ResponseEntity<Void> createUserDetails(@Valid @RequestBody UserDetails userDetails) {
         logger.debug("REST request to save UserDetails : {}", userDetails);
         if(userDetailsService.userSignup(userDetails))
             return ResponseEntity.ok().build();

@@ -6,6 +6,8 @@ import com.todo.service.entity.TaskDetails;
 import com.todo.service.entity.UserDetails;
 import com.todo.service.repository.CustomTaskDetailsRepository;
 import com.todo.service.repository.CustomUserDetailsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.todo.service.config.Constants.FAILED;
+import static com.todo.service.config.Constants.SUCCESS;
 
 /**
  * Class name : TaskDetailsService
@@ -23,13 +28,15 @@ import java.util.Optional;
 public class TaskDetailsService {
 
     @Autowired
-    HttpHeaders httpHeaders;
+    private HttpHeaders httpHeaders;
 
     @Autowired
-    CustomTaskDetailsRepository customTaskDetailsRepository;
+    private CustomTaskDetailsRepository customTaskDetailsRepository;
 
     @Autowired
-    CustomUserDetailsRepository customUserDetailsRepository;
+    private CustomUserDetailsRepository customUserDetailsRepository;
+
+    private static Logger logger = LoggerFactory.getLogger(TaskDetailsService.class);
 
     /**
      * find all the Tasks associated with a user.
@@ -37,17 +44,18 @@ public class TaskDetailsService {
      * @return
      */
     public ResponseEntity<GenericResponse> getTasksForUser(String name) {
+        logger.debug("Request arrived with name {}",name);
         Optional<UserDetails> optionalUserDetails = customUserDetailsRepository.getByUserName(name);
         if (optionalUserDetails.isPresent()) {
             Optional<List<TaskDetails>> taskList = customTaskDetailsRepository.findByUserDetails(optionalUserDetails.get());
             if (taskList.isPresent()) {
-                GenericResponse<List<TaskDetails>> genericResponse = new GenericResponse<>("Success", taskList.get());
+                GenericResponse<List<TaskDetails>> genericResponse = new GenericResponse<>(SUCCESS, taskList.get());
                 return ResponseEntity.ok().headers(httpHeaders).body(genericResponse);
             } else {
                 return ResponseEntity.notFound().build();
             }
         } else {
-            GenericResponse<String> genericResponse = new GenericResponse<>("Failed", "No Such User available");
+            GenericResponse<String> genericResponse = new GenericResponse<>(FAILED, "No Such User available");
             return ResponseEntity.badRequest().headers(httpHeaders).body(genericResponse);
         }
     }
@@ -76,11 +84,11 @@ public class TaskDetailsService {
             taskDetails.setUserDetails(optionalUserDetails.get());
             taskDetails.setEstimatedTime(taskDomain.getEstimatedTime());
             TaskDetails savedTask = customTaskDetailsRepository.save(taskDetails);
-            GenericResponse<TaskDetails> genericResponse = new GenericResponse<>("Success", savedTask);
+            GenericResponse<TaskDetails> genericResponse = new GenericResponse<>(SUCCESS, savedTask);
             return ResponseEntity.ok().headers(httpHeaders).body(genericResponse);
         } else {
-            GenericResponse<String> genericResponse = new GenericResponse<>("Failed", "No such User");
-            return ResponseEntity.ok().headers(httpHeaders).body(genericResponse);
+            GenericResponse<String> genericResponse = new GenericResponse<>(FAILED, "No such User");
+            return ResponseEntity.badRequest().headers(httpHeaders).body(genericResponse);
         }
     }
 
@@ -97,10 +105,10 @@ public class TaskDetailsService {
             taskDetails.setTaskDescription(taskDomain.getTaskDescription());
             taskDetails.setEstimatedTime(taskDomain.getEstimatedTime());
             TaskDetails updatedTask = customTaskDetailsRepository.save(taskDetails);
-            GenericResponse<TaskDetails> genericResponse = new GenericResponse<>("Success", updatedTask);
+            GenericResponse<TaskDetails> genericResponse = new GenericResponse<>(SUCCESS, updatedTask);
             return ResponseEntity.ok().headers(httpHeaders).body(genericResponse);
         } else {
-            GenericResponse<String> genericResponse = new GenericResponse<>("Fail", "No Such Task");
+            GenericResponse<String> genericResponse = new GenericResponse<>(FAILED, "No Such Task");
             return ResponseEntity.badRequest().headers(httpHeaders).body(genericResponse);
         }
     }

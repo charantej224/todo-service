@@ -1,6 +1,8 @@
 package com.todo.service.service;
 
 import com.todo.service.repository.CustomUserDetailsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,8 @@ public class UserDetailsImplService implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private static Logger logger = LoggerFactory.getLogger(UserDetailsImplService.class);
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<com.todo.service.entity.UserDetails> userDetailsEntity = userDetailsRepository.getByUserName(username);
@@ -32,12 +36,18 @@ public class UserDetailsImplService implements UserDetailsService {
 
     /**
      * Help a new user to sign-up and then use the services for the todo list preparation.
+     *
      * @param userDetails
-     * @return
+     * @returns Boolean if the user is successfully saved, in all other cases, it returns false.
      */
-    public Boolean userSignup(com.todo.service.entity.UserDetails userDetails){
+    public Boolean userSignup(com.todo.service.entity.UserDetails userDetails) {
         userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
-        userDetailsRepository.save(userDetails);
-        return Boolean.TRUE;
+        try {
+            userDetailsRepository.save(userDetails);
+            return Boolean.TRUE;
+        } catch (RuntimeException exception) {
+            logger.error("Exception occurred", exception);
+            return Boolean.FALSE;
+        }
     }
 }
