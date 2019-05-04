@@ -1,5 +1,6 @@
 package com.todo.service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -34,14 +35,17 @@ public class TaskDetails implements Serializable {
     @Column(name = "estimated_time")
     private Integer estimatedTime;
 
+    @JsonIgnore
     @CreationTimestamp
     @Column(name = "created_time")
     private Instant createdTime;
 
+    @JsonIgnore
     @UpdateTimestamp
     @Column(name = "modified_time")
     private Instant modifiedTime;
 
+    @JsonIgnore
     @ManyToOne
     @JsonIgnoreProperties("taskDetails")
     private UserDetails userDetails;

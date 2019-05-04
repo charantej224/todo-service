@@ -10,6 +10,9 @@ public class TaskDetailsDomain {
     @JsonProperty("taskId")
     private Long taskId;
 
+    @JsonProperty("estimatedTime")
+    private Integer estimatedTime;
+
     @JsonProperty("taskname")
     private String taskName;
 
@@ -30,6 +33,14 @@ public class TaskDetailsDomain {
 
     public void setTaskId(Long taskId) {
         this.taskId = taskId;
+    }
+
+    public Integer getEstimatedTime() {
+        return estimatedTime;
+    }
+
+    public void setEstimatedTime(Integer estimatedTime) {
+        this.estimatedTime = estimatedTime;
     }
 
     public String getTaskName() {

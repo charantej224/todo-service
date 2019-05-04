@@ -3,7 +3,6 @@ package com.todo.service.controllers;
 import com.codahale.metrics.annotation.Timed;
 import com.todo.service.domain.GenericResponse;
 import com.todo.service.domain.TaskDetailsDomain;
-import com.todo.service.entity.TaskDetails;
 import com.todo.service.service.TaskDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +51,7 @@ public class TaskDetailsController {
      */
     @PutMapping("/task-details")
     @Timed
-    public ResponseEntity<TaskDetails> updateTaskDetails(@Valid @RequestBody TaskDetailsDomain taskDetails) {
+    public ResponseEntity<GenericResponse> updateTaskDetails(@Valid @RequestBody TaskDetailsDomain taskDetails) {
         log.debug("REST request to update TaskDetails : {}", taskDetails);
         return taskDetailsService.updateTask(taskDetails);
     }

@@ -54,6 +54,7 @@ public class TaskDetailsService {
             taskDetails.setTaskDescription(taskDomain.getTaskDescription());
             taskDetails.setTaskName(taskDomain.getTaskName());
             taskDetails.setUserDetails(optionalUserDetails.get());
+            taskDetails.setEstimatedTime(taskDomain.getEstimatedTime());
             TaskDetails savedTask = customTaskDetailsRepository.save(taskDetails);
             GenericResponse<TaskDetails> genericResponse = new GenericResponse<>("Success", savedTask);
             return ResponseEntity.ok().headers(httpHeaders).body(genericResponse);
@@ -64,10 +65,12 @@ public class TaskDetailsService {
     }
 
     public ResponseEntity<GenericResponse> updateTask(TaskDetailsDomain taskDomain) {
-        TaskDetails taskDetails = customTaskDetailsRepository.getOne(taskDomain.getTaskId());
-        if (null != taskDetails) {
+        Optional<TaskDetails> optionalTaskDetails = customTaskDetailsRepository.findById(taskDomain.getTaskId());
+        if (optionalTaskDetails.isPresent()) {
+            TaskDetails taskDetails = optionalTaskDetails.get();
             taskDetails.setTaskName(taskDomain.getTaskName());
             taskDetails.setTaskDescription(taskDomain.getTaskDescription());
+            taskDetails.setEstimatedTime(taskDomain.getEstimatedTime());
             TaskDetails updatedTask = customTaskDetailsRepository.save(taskDetails);
             GenericResponse<TaskDetails> genericResponse = new GenericResponse<>("Success", updatedTask);
             return ResponseEntity.ok().headers(httpHeaders).body(genericResponse);
