@@ -20,6 +20,11 @@ import java.util.Date;
 
 import static com.todo.service.config.Constants.*;
 
+/**
+ * Class name : Authentication filter.
+ *              this class helps to validate the token received in the request. only based on successful token
+ *              validation, the request can be allowed further. Hence, the API's are secured with use of token.
+ */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;

@@ -13,7 +13,9 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * A TaskDetails.
+ * Class Name : TaskDetails.
+ *              entity classes used by java ORM framework to persist the data into database.
+ *
  */
 @Entity
 @Table(name = "task_details")

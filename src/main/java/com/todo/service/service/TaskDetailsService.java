@@ -14,6 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class name : TaskDetailsService
+ *              Service class to handle requests from consumer. this layer talks to the database to get the requests
+ *              served.
+ */
 @Service
 public class TaskDetailsService {
 
@@ -26,6 +31,11 @@ public class TaskDetailsService {
     @Autowired
     CustomUserDetailsRepository customUserDetailsRepository;
 
+    /**
+     * find all the Tasks associated with a user.
+     * @param name
+     * @return
+     */
     public ResponseEntity<GenericResponse> getTasksForUser(String name) {
         Optional<UserDetails> optionalUserDetails = customUserDetailsRepository.getByUserName(name);
         if (optionalUserDetails.isPresent()) {
@@ -42,11 +52,21 @@ public class TaskDetailsService {
         }
     }
 
+    /**
+     * Deleting the task that is no more required for the user's todo list.
+     * @param id
+     * @return
+     */
     public ResponseEntity<Void> deleteTask(Long id) {
         customTaskDetailsRepository.deleteById(id);
         return ResponseEntity.accepted().build();
     }
 
+    /**
+     * create a new task for the user.
+     * @param taskDomain
+     * @return
+     */
     public ResponseEntity<GenericResponse> createTask(TaskDetailsDomain taskDomain) {
         Optional<UserDetails> optionalUserDetails = customUserDetailsRepository.getByUserName(taskDomain.getUserName());
         if (optionalUserDetails.isPresent()) {
@@ -64,6 +84,11 @@ public class TaskDetailsService {
         }
     }
 
+    /**
+     * update the task for the user.
+     * @param taskDomain
+     * @return
+     */
     public ResponseEntity<GenericResponse> updateTask(TaskDetailsDomain taskDomain) {
         Optional<TaskDetails> optionalTaskDetails = customTaskDetailsRepository.findById(taskDomain.getTaskId());
         if (optionalTaskDetails.isPresent()) {

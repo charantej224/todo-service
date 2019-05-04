@@ -30,6 +30,11 @@ public class UserDetailsImplService implements UserDetailsService {
         return new User(userDetailsEntity.get().getUserName(), userDetailsEntity.get().getPassword(), emptyList());
     }
 
+    /**
+     * Help a new user to sign-up and then use the services for the todo list preparation.
+     * @param userDetails
+     * @return
+     */
     public Boolean userSignup(com.todo.service.entity.UserDetails userDetails){
         userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
         userDetailsRepository.save(userDetails);

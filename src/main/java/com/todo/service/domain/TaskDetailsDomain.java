@@ -2,6 +2,11 @@ package com.todo.service.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * class name : TaskDetailsDomain
+ *              model class used to handle the consumer based requests and translate them appropriate into entity
+ *              requests to handle the persistent operations.
+ */
 public class TaskDetailsDomain {
 
     @JsonProperty("username")

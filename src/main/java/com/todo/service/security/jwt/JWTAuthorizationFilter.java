@@ -15,6 +15,11 @@ import java.util.ArrayList;
 
 import static com.todo.service.config.Constants.*;
 
+/**
+ * class name : JWTAuthorizationFilter
+ *              authorizes the end points to be secured or not and returns response based on the processing or
+ *              Http 403 - Forbidden request.
+ */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     public JWTAuthorizationFilter(AuthenticationManager authManager) {
