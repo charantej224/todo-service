@@ -1,9 +1,7 @@
 package com.todo.service.config;
 
-import com.todo.service.security.*;
-import com.todo.service.security.jwt.*;
-
-import org.springframework.context.annotation.Bean;
+import com.todo.service.security.jwt.JWTAuthenticationFilter;
+import com.todo.service.security.jwt.JWTAuthorizationFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -21,12 +19,9 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final TokenProvider tokenProvider;
-
     private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfiguration(TokenProvider tokenProvider, SecurityProblemSupport problemSupport) {
-        this.tokenProvider = tokenProvider;
+    public SecurityConfiguration(SecurityProblemSupport problemSupport) {
         this.problemSupport = problemSupport;
     }
 
@@ -55,16 +50,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
             .authorizeRequests()
+            .antMatchers("/sign-up").permitAll()
             .antMatchers("/api/**").authenticated()
-            .antMatchers("/management/health").permitAll()
-            .antMatchers("/management/info").permitAll()
-            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-        .and()
-            .apply(securityConfigurerAdapter());
+            .antMatchers("/management/**").permitAll()
+            .and()
+            .addFilter(new JWTAuthenticationFilter(authenticationManagerBean()))
+            .addFilter(new JWTAuthorizationFilter(authenticationManagerBean()))
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }
 
-    private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider);
-    }
 }

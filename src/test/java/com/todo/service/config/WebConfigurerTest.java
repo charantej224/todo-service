@@ -127,10 +127,10 @@ public class WebConfigurerTest {
 
         mockMvc.perform(
             options("/api/test-cors")
-                .header(HttpHeaders.ORIGIN, "other.domain.com")
+                .header(HttpHeaders.ORIGIN, "other.entity.com")
                 .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST"))
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"))
+            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.entity.com"))
             .andExpect(header().string(HttpHeaders.VARY, "Origin"))
             .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET,POST,PUT,DELETE"))
             .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true"))
@@ -138,9 +138,9 @@ public class WebConfigurerTest {
 
         mockMvc.perform(
             get("/api/test-cors")
-                .header(HttpHeaders.ORIGIN, "other.domain.com"))
+                .header(HttpHeaders.ORIGIN, "other.entity.com"))
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"));
+            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.entity.com"));
     }
 
     @Test
@@ -157,7 +157,7 @@ public class WebConfigurerTest {
 
         mockMvc.perform(
             get("/test/test-cors")
-                .header(HttpHeaders.ORIGIN, "other.domain.com"))
+                .header(HttpHeaders.ORIGIN, "other.entity.com"))
             .andExpect(status().isOk())
             .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
     }
@@ -172,7 +172,7 @@ public class WebConfigurerTest {
 
         mockMvc.perform(
             get("/api/test-cors")
-                .header(HttpHeaders.ORIGIN, "other.domain.com"))
+                .header(HttpHeaders.ORIGIN, "other.entity.com"))
             .andExpect(status().isOk())
             .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
     }
@@ -187,7 +187,7 @@ public class WebConfigurerTest {
 
         mockMvc.perform(
             get("/api/test-cors")
-                .header(HttpHeaders.ORIGIN, "other.domain.com"))
+                .header(HttpHeaders.ORIGIN, "other.entity.com"))
             .andExpect(status().isOk())
             .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
     }

@@ -1,0 +1,43 @@
+{
+    "name": "UserDetails",
+    "fields": [
+        {
+            "fieldName": "userName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "unique"
+            ]
+        },
+        {
+            "fieldName": "password",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "modifiedTime",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "javadoc": "one department can be associated with multiple employees.",
+            "relationshipName": "taskDetails",
+            "otherEntityName": "taskDetails",
+            "otherEntityRelationshipName": "userDetails"
+        }
+    ],
+    "changelogDate": "20190503142633",
+    "entityTableName": "user_details",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "todoservice",
+    "applications": "*",
+    "microserviceName": "todoservice"
+}

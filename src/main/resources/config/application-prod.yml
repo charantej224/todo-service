@@ -27,7 +27,7 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/todoservice?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false
+        url: jdbc:mysql://localhost:3308/todoservice?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false
         username: root
         password:
         hikari:

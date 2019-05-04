@@ -1,0 +1,46 @@
+{
+    "name": "TaskDetails",
+    "fields": [
+        {
+            "fieldName": "taskName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "unique"
+            ]
+        },
+        {
+            "fieldName": "taskDescription",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "estimatedTime",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "createdTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "modifiedTime",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "userDetails",
+            "otherEntityName": "userDetails",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190503142634",
+    "entityTableName": "task_details",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "todoservice",
+    "applications": "*",
+    "microserviceName": "todoservice"
+}
