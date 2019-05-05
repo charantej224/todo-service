@@ -26,6 +26,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.cloudfoundry.com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
@@ -113,7 +114,7 @@ public class ApplicationIntegratedTests {
     }
 
     @Test
-    public void test_stage5_updateTask() throws Exception {
+    public void test_stage5_getAvailableTasks() throws Exception {
         RequestBuilder rb = MockMvcRequestBuilders.get("/api/task-details?name=admin").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).header(AUTH_HEADER_NAME, token);;
         MvcResult result = mockMvc.perform(rb).andReturn();
         String resultValue = result.getResponse().getContentAsString();
@@ -129,6 +130,20 @@ public class ApplicationIntegratedTests {
         assertEquals(202,result.getResponse().getStatus());
     }
 
+    @Test
+    public void test_stage7_noAvailableTasks() throws Exception {
+        RequestBuilder rb = MockMvcRequestBuilders.get("/api/task-details?name=admin").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).header(AUTH_HEADER_NAME, token);;
+        MvcResult result = mockMvc.perform(rb).andReturn();
+        assertEquals(HttpStatus.NOT_FOUND.value(),result.getResponse().getStatus());
+    }
+
+    @Test
+    public void test_stage8_noSuchUser() throws Exception {
+        RequestBuilder rb = MockMvcRequestBuilders.post("/api/task-details").content(getnewTaskDetailsAsString_noUser()).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).header(AUTH_HEADER_NAME, token);;
+        MvcResult result = mockMvc.perform(rb).andReturn();
+        assertEquals(HttpStatus.BAD_REQUEST.value(),result.getResponse().getStatus());
+    }
+
     private String getUserDetailsAsString() throws Exception {
         UserDetails userDetails = new UserDetails();
         userDetails.setUserName("admin");
@@ -140,6 +155,15 @@ public class ApplicationIntegratedTests {
     private String getnewTaskDetailsAsString() throws Exception {
         TaskDetailsDomain taskDetailsDomain = new TaskDetailsDomain();
         taskDetailsDomain.setUserName("admin");
+        taskDetailsDomain.setTaskName("Test");
+        taskDetailsDomain.setTaskDescription("test description");
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(taskDetailsDomain);
+    }
+
+    private String getnewTaskDetailsAsString_noUser() throws Exception {
+        TaskDetailsDomain taskDetailsDomain = new TaskDetailsDomain();
+        taskDetailsDomain.setUserName("admin1");
         taskDetailsDomain.setTaskName("Test");
         taskDetailsDomain.setTaskDescription("test description");
         ObjectMapper objectMapper = new ObjectMapper();
