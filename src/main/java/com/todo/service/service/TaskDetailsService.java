@@ -62,7 +62,7 @@ public class TaskDetailsService {
     }
 
     /**
-     * Deleting the task that is no more required for the user's todo list.
+     * Deleting the task that is no more required for the user's todolist
      *
      * @param id
      * @return ResponseEntity, Http Status Code : Accepted if record exist, else not found.

@@ -1,4 +1,4 @@
-package com.todo.service.domain;
+package com.todo.service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;

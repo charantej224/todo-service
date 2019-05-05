@@ -27,7 +27,7 @@ public class UserDetailsImplService implements UserDetailsService {
     private static Logger logger = LoggerFactory.getLogger(UserDetailsImplService.class);
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         Optional<com.todo.service.entity.UserDetails> userDetailsEntity = userDetailsRepository.getByUserName(username);
         if (!userDetailsEntity.isPresent())
             throw new UsernameNotFoundException(username);
@@ -35,7 +35,7 @@ public class UserDetailsImplService implements UserDetailsService {
     }
 
     /**
-     * Help a new user to sign-up and then use the services for the todo list preparation.
+     * Help a new user to sign-up and then use the services for the todolist preparation.
      *
      * @param userDetails
      * @returns Boolean if the user is successfully saved, in all other cases, it returns false.

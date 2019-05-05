@@ -1,4 +1,4 @@
-package com.todo.service.domain;
+package com.todo.service.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
