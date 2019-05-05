@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TaskDetailsDomain {
 
-    @JsonProperty("username")
+    @JsonProperty("userName")
     private String userName;
 
     @JsonProperty("taskId")
@@ -18,10 +18,10 @@ public class TaskDetailsDomain {
     @JsonProperty("estimatedTime")
     private Integer estimatedTime;
 
-    @JsonProperty("taskname")
+    @JsonProperty("taskName")
     private String taskName;
 
-    @JsonProperty("taskdescription")
+    @JsonProperty("taskDescription")
     private String taskDescription;
 
     public String getUserName() {

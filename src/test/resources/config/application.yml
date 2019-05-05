@@ -26,7 +26,7 @@ spring:
         hikari:
             auto-commit: false
     jpa:
-        database-platform: io.github.jhipster.entity.util.FixedH2Dialect
+        database-platform: org.hibernate.dialect.H2Dialect
         database: H2
         open-in-view: false
         show-sql: false
@@ -45,6 +45,7 @@ spring:
             hibernate.jdbc.time_zone: UTC
     liquibase:
         contexts: test
+        change-log: classpath:config/liquibase/master.xml
     mail:
         host: localhost
     messages:
@@ -101,3 +102,6 @@ jhipster:
 # ===================================================================
 
 # application:
+local:
+    server:
+        port: 52310

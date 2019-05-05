@@ -21,8 +21,8 @@ import static com.todo.service.config.Constants.SUCCESS;
 
 /**
  * Class name : TaskDetailsService
- *              Service class to handle requests from consumer. this layer talks to the database to get the requests
- *              served.
+ * Service class to handle requests from consumer. this layer talks to the database to get the requests
+ * served.
  */
 @Service
 public class TaskDetailsService {
@@ -40,11 +40,12 @@ public class TaskDetailsService {
 
     /**
      * find all the Tasks associated with a user.
+     *
      * @param name
      * @return
      */
     public ResponseEntity<GenericResponse> getTasksForUser(String name) {
-        logger.debug("Request arrived with name {}",name);
+        logger.debug("Request arrived with name {}", name);
         Optional<UserDetails> optionalUserDetails = customUserDetailsRepository.getByUserName(name);
         if (optionalUserDetails.isPresent()) {
             Optional<List<TaskDetails>> taskList = customTaskDetailsRepository.findByUserDetails(optionalUserDetails.get());
@@ -62,18 +63,25 @@ public class TaskDetailsService {
 
     /**
      * Deleting the task that is no more required for the user's todo list.
+     *
      * @param id
-     * @return
+     * @return ResponseEntity, Http Status Code : Accepted if record exist, else not found.
      */
     public ResponseEntity<Void> deleteTask(Long id) {
-        customTaskDetailsRepository.deleteById(id);
-        return ResponseEntity.accepted().build();
+        Optional<TaskDetails> optionalTaskDetails = customTaskDetailsRepository.findById(id);
+        if (optionalTaskDetails.isPresent()) {
+            customTaskDetailsRepository.deleteById(id);
+            return ResponseEntity.accepted().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
      * create a new task for the user.
+     *
      * @param taskDomain
-     * @return
+     * @return ResponseEntity with Generic Response, with HttpStatus as OK or BAD_REQUEST
      */
     public ResponseEntity<GenericResponse> createTask(TaskDetailsDomain taskDomain) {
         Optional<UserDetails> optionalUserDetails = customUserDetailsRepository.getByUserName(taskDomain.getUserName());
@@ -94,8 +102,9 @@ public class TaskDetailsService {
 
     /**
      * update the task for the user.
+     *
      * @param taskDomain
-     * @return
+     * @return ResponseEntity with HttpStatus as OK if successful, otherwise BAD_REQUEST
      */
     public ResponseEntity<GenericResponse> updateTask(TaskDetailsDomain taskDomain) {
         Optional<TaskDetails> optionalTaskDetails = customTaskDetailsRepository.findById(taskDomain.getTaskId());
