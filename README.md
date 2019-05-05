@@ -1,42 +1,71 @@
 # todoservice
-This application was generated using JHipster 5.7.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.7.0](https://www.jhipster.tech/documentation-archive/v5.7.0).
 
-This is a "microservice" application intended to be part of a microservice architecture, please refer to the [Doing microservices with JHipster][] page of the documentation for more information.
+#### Overview and Brief description
+__________
 
-This application is configured for Service Discovery and Configuration with . On launch, it will refuse to start if it is not able to connect to .
+this is a spring boot micros service based implementation to help user store the tasks. the users can 
+also add/remote/update task. The tasks can also be timed using the expiry time by which the 
+tasks should be accomplished. 
 
-## Development
+Technical Stack for this implementation includes.
+1. Spring boot Web to host micro services.
+2. Sring Data/Repositories with Mysql
+3. H2 database used for Integration tests.
+4. gradle is used as build tool
+5. Swagger API to establish the contacts.
+6. sonarqube for static scan.
+7. Junits and Mockito for Unit testing.
+8. Mock MVC for integration tests.
+9. liquibase migrations to migrate schema definitions readily to another database.
 
-To start your application in the dev profile, simply run:
+#### Security Considerations.
+__________
+The todo services is statically scanned with sonarqube for the vulnerabilities from OWASP TOP 10
+and SANS 25.
 
-    
+for reference OWASP top10
+```
+https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project
+```
+for reference SANS 25
+```
+https://www.sans.org/top25-software-errors
+```
+report inform of screenshot is present in workspace with name "ToDo_StaticScanReport.png"
 
+#### Pre-requisites for the build.
+__________
+Running Docker Containers:
+* SonarQube for scan reports.
+* Mysql to store the task data.
+```
+docker-compose -f src/main/docker/mysql.yml up -d
+docker-compose -f src/main/docker/sonar.yml up -d
+```
+#### Build & Test Instructions.
+__________
+* Build, Compile, Tests execution
+```
+./gradlew clean build
+```
 
-For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
+* Running the micro service
+```
+./gradlew
+```
 
+###### Testing
+__________
+```
+./gradlew test
+```
+Note: Jacoco coverage reports can be found in the path below:
+```
+./build/reports/jacoco/test/html/index.html
+```
 
-
-## Building for production
-
-To optimize the todoservice application for production, run:
-
-
-To ensure everything worked, run:
-
-
-
-Refer to [Using JHipster in production][] for more details.
-
-## Testing
-
-To launch your application's tests, run:
-
-    ./gradlew test
-
-For more information, refer to the [Running tests page][].
-
-### Code quality
-
+###### Code quality
+__________
 Sonar is used to analyse code quality. You can start a local Sonar server (accessible on http://localhost:9001) with:
 
 ```
@@ -49,43 +78,86 @@ Then, run a Sonar analysis:
 ./gradlew -Pprod clean test sonarqube
 ```
 
-For more information, refer to the [Code quality page][].
+###### Dockerize the application.
+__________
+```
+docker-compose -f src/main/docker/app.yml up -d
+```
 
-## Using Docker to simplify development (optional)
+####  Testing the services with Actual data.
+__________
+App facilitates the sign-up process, hence no default accounts are needed.
+However, using below curl commands one can register accounts for testing purposes.
 
-You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
+* sign-up user
+```
+curl -X POST \
+  http://localhost:9080/todoservice/sign-up \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"userName": "admin1",
+	"password" : "admin1"
+}'
+```
 
-For example, to start a  database in a docker container, run:
+* login with user (JWT token is returned in the response headers, this should be exactracted and be used in 
+future requests)
+```
+curl -X POST \
+  http://localhost:9080/todoservice/login \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"userName": "admin1",
+	"password" : "admin1"
+}'
+```
 
-    docker-compose -f src/main/docker/.yml up -d
+* create task for the user. (auth token from the request 2 needs to be used here.)
+```
+curl -X POST \
+  http://localhost:9080/todoservice/api/task-details \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJleHAiOjE1NTc5MTQyMDd9.8zW6pWzrE5AfVmyNqmwXAi6rTZPJZtjf4c7DMQl5duyauw2cXhezJC3bcJ_Gn4QSzYVOU1lOe7FLI-bjMCdVYA' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "userName": "admin1",
+    "taskName": "groceries",
+    "taskDescription": "buy all groceries this weekend",
+    "estimatedTime": 100
+}'
+```
 
-To stop it and remove the container, run:
+* update task for the user. (auth token from the request 2 needs to be used here.)
+```
+curl -X PUT \
+  http://localhost:9080/todoservice/api/task-details \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGFyYW50ZWoiLCJleHAiOjE1NTc4MjQxMjh9.Uy_kEs6_g5fhiSHaWEt7pQ__i2OVlmeayrWzHs75hyRz4A0qlI59BHCi9ZwX49bzF6KI4ORSzvADq4vGnjvLqg' \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"taskId": 1,
+	"taskName":"groceries11",
+	"taskDescription":"buy all groceries this weekend11",
+	"estimatedTime": 10
+}'
+```
 
-    docker-compose -f src/main/docker/.yml down
+* get the tasks for the user.
+```
+curl -X GET \
+  'http://localhost:9080/todoservice/api/task-details?name=admin1' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGFyYW50ZWoiLCJleHAiOjE1NTc4MjQxMjh9.Uy_kEs6_g5fhiSHaWEt7pQ__i2OVlmeayrWzHs75hyRz4A0qlI59BHCi9ZwX49bzF6KI4ORSzvADq4vGnjvLqg'
+```
 
-You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
+* delete a task for the user.
+```
+curl -X DELETE \
+  http://localhost:9080/todoservice/api/task-details/1 \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGFyYW50ZWoiLCJleHAiOjE1NTc4MjQxMjh9.Uy_kEs6_g5fhiSHaWEt7pQ__i2OVlmeayrWzHs75hyRz4A0qlI59BHCi9ZwX49bzF6KI4ORSzvADq4vGnjvLqg'
+```
 
-    
 
-Then run:
-
-    docker-compose -f src/main/docker/app.yml up -d
-
-For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
-
-## Continuous Integration (optional)
-
-To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
-
-[JHipster Homepage and latest documentation]: https://www.jhipster.tech
-[JHipster 5.7.0 archive]: https://www.jhipster.tech/documentation-archive/v5.7.0
-[Doing microservices with JHipster]: https://www.jhipster.tech/documentation-archive/v5.7.0/microservices-architecture/
-[Using JHipster in development]: https://www.jhipster.tech/documentation-archive/v5.7.0/development/
-[Using Docker and Docker-Compose]: https://www.jhipster.tech/documentation-archive/v5.7.0/docker-compose
-[Using JHipster in production]: https://www.jhipster.tech/documentation-archive/v5.7.0/production/
-[Running tests page]: https://www.jhipster.tech/documentation-archive/v5.7.0/running-tests/
-[Code quality page]: https://www.jhipster.tech/documentation-archive/v5.7.0/code-quality/
-[Setting up Continuous Integration]: https://www.jhipster.tech/documentation-archive/v5.7.0/setting-up-ci/
+####  Futuristic process.
+__________
+1. deployments into AWS with pipeline integrated with kubernetes.
+2. spring reactive streaming (as of present, non-blocking drivers not available with rdbms databases)
 
 
