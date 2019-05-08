@@ -51,7 +51,7 @@ public class TaskDetailsService {
             Optional<List<TaskDetails>> taskList = customTaskDetailsRepository.findByUserDetails(optionalUserDetails.get());
             if (taskList.isPresent()) {
                 GenericResponse<List<TaskDetails>> genericResponse = new GenericResponse<>(SUCCESS, taskList.get());
-                return ResponseEntity.ok().headers(httpHeaders).body(genericResponse);
+                return ResponseEntity.ok().body(genericResponse);
             } else {
                 return ResponseEntity.notFound().build();
             }

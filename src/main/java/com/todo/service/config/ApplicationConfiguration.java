@@ -13,6 +13,9 @@ public class ApplicationConfiguration {
     public HttpHeaders getHttpHeader() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        if(httpHeaders.getAccessControlAllowOrigin() == null){
+            httpHeaders.setAccessControlAllowOrigin("http://localhost:4200");
+        }
         return httpHeaders;
     }
 

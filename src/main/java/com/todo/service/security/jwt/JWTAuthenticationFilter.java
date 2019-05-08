@@ -62,6 +62,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             .signWith(SignatureAlgorithm.HS512, SECRET)
             .compact();
         logger.debug(token);
-        response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        if(request.getRequestURI() != null && request.getRequestURI().contains("login")){
+            response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+            response.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+            response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            response.addHeader("Access-Control-Allow-Headers", "*");
+            response.addHeader("Access-Control-Allow-Credentials", "true");
+            response.addHeader("Access-Control-Expose-Headers", "Authorization");
+            response.addHeader("Access-Control-Max-Age", "3600");
+            response.setStatus(200);
+        }
+
     }
 }
