@@ -93,10 +93,10 @@ public class TaskDetailsService {
             taskDetails.setEstimatedTime(taskDomain.getEstimatedTime());
             TaskDetails savedTask = customTaskDetailsRepository.save(taskDetails);
             GenericResponse<TaskDetails> genericResponse = new GenericResponse<>(SUCCESS, savedTask);
-            return ResponseEntity.ok().headers(httpHeaders).body(genericResponse);
+            return ResponseEntity.ok().body(genericResponse);
         } else {
             GenericResponse<String> genericResponse = new GenericResponse<>(FAILED, "No such User");
-            return ResponseEntity.badRequest().headers(httpHeaders).body(genericResponse);
+            return ResponseEntity.badRequest().body(genericResponse);
         }
     }
 
@@ -115,10 +115,10 @@ public class TaskDetailsService {
             taskDetails.setEstimatedTime(taskDomain.getEstimatedTime());
             TaskDetails updatedTask = customTaskDetailsRepository.save(taskDetails);
             GenericResponse<TaskDetails> genericResponse = new GenericResponse<>(SUCCESS, updatedTask);
-            return ResponseEntity.ok().headers(httpHeaders).body(genericResponse);
+            return ResponseEntity.ok().body(genericResponse);
         } else {
             GenericResponse<String> genericResponse = new GenericResponse<>(FAILED, "No Such Task");
-            return ResponseEntity.badRequest().headers(httpHeaders).body(genericResponse);
+            return ResponseEntity.badRequest().body(genericResponse);
         }
     }
 }
