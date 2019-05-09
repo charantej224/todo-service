@@ -23,7 +23,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="task_name" type="varchar(255)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_task_details_task_name" />
+                <constraints nullable="true" uniqueConstraintName="ux_task_details_task_name" />
             </column>
 
             <column name="task_description" type="varchar(255)">

@@ -53,7 +53,7 @@ public class TaskDetailsService {
                 GenericResponse<List<TaskDetails>> genericResponse = new GenericResponse<>(SUCCESS, taskList.get());
                 return ResponseEntity.ok().body(genericResponse);
             } else {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.noContent().build();
             }
         } else {
             GenericResponse<String> genericResponse = new GenericResponse<>(FAILED, "No Such User available");

@@ -8,7 +8,7 @@ entity UserDetails {
 }
 
 entity TaskDetails {
-    taskName String unique,
+    taskName String,
     taskDescription String,
     estimatedTime Integer,
     createdTime Instant,

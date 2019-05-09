@@ -28,7 +28,7 @@ public class TaskDetails implements Serializable {
     private Long id;
 
     
-    @Column(name = "task_name", unique = true)
+    @Column(name = "task_name")
     private String taskName;
 
     @Column(name = "task_description")
